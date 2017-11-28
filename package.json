@@ -23,7 +23,7 @@
         "build:demo": "webpack --config _webpack.demo.config.js --optimize-minimize",
         "test": "mocha \"test/**/*spec.js*\" --compilers js:babel-register --reporter dot",
         "prepublish": "npm run build:dist",
-        "preinstall": "npm run build:dist"
+        "postinstall": "npm run build:dist"
     },
     "author": "Jake Ginnivan",
     "license": "MIT",

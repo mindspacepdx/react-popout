@@ -87,9 +87,13 @@ export default class PopoutWindow extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if (newProps.title !== this.props.title && this.state.popoutWindow) {
-
-            this.state.popoutWindow.document.title = newProps.title;
+        if (this.state.popoutWindow) {
+            if (this.props.title !== newProps.title) {
+                this.state.popoutWindow.document.title = newProps.title;
+            }
+            if (this.props.url !== newProps.url) {
+                this.state.popoutWindow.location.assign(newProps.url);
+            }
         }
     }
 
