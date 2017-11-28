@@ -92,7 +92,10 @@ export default class PopoutWindow extends React.Component {
                 this.state.popoutWindow.document.title = newProps.title;
             }
             if (this.props.url !== newProps.url) {
-                this.state.popoutWindow.location.assign(newProps.url);
+                this.state.popoutWindow.postMessage({
+                    type: 'receiveSco',
+                    url: newProps.url
+                }, '*');
             }
         }
     }
