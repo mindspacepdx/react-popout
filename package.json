@@ -22,7 +22,8 @@
         "build:dist": "webpack --config _webpack.dist.config.js --optimize-minimize",
         "build:demo": "webpack --config _webpack.demo.config.js --optimize-minimize",
         "test": "mocha \"test/**/*spec.js*\" --compilers js:babel-register --reporter dot",
-        "prepublish": "npm run build:dist"
+        "prepublish": "npm run build:dist",
+        "preinstall": "npm run build:dist" // Adding so installing from Git works
     },
     "author": "Jake Ginnivan",
     "license": "MIT",
