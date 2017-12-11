@@ -87,9 +87,16 @@ export default class PopoutWindow extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if (newProps.title !== this.props.title && this.state.popoutWindow) {
-
-            this.state.popoutWindow.document.title = newProps.title;
+        if (this.state.popoutWindow) {
+            if (this.props.title !== newProps.title) {
+                this.state.popoutWindow.document.title = newProps.title;
+            }
+            if (this.props.url !== newProps.url) {
+                this.state.popoutWindow.postMessage({
+                    type: 'receiveSco',
+                    url: newProps.url
+                }, '*');
+            }
         }
     }
 
@@ -123,10 +130,7 @@ export default class PopoutWindow extends React.Component {
         popoutWindow.addEventListener('load', this.popoutWindowLoaded);
         popoutWindow.addEventListener('beforeunload', this.popoutWindowUnloading);
 
-        // If they have no specified a URL, then we need to forcefully call popoutWindowLoaded()
-        if (this.props.url === ABOUT_BLANK) {
-            popoutWindow.document.readyState === 'complete' && this.popoutWindowLoaded(popoutWindow);
-        }
+        popoutWindow.document.readyState === 'complete' && this.popoutWindowLoaded(popoutWindow);
     }
 
     /**
@@ -142,8 +146,10 @@ export default class PopoutWindow extends React.Component {
     }
 
     popoutWindowUnloading() {
+        if (this.props.onClosing) {
+            this.props.onClosing()
+        }
         ReactDOM.unmountComponentAtNode(this.state.container);
-        this.props.onClosing && this.props.onClosing();
     }
 
     renderToContainer(container, popoutWindow, children) {
