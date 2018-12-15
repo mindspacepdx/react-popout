@@ -124,13 +124,17 @@ export default class PopoutWindow extends React.Component {
     }
 
     openPopoutWindow(ownerWindow) {
-        const popoutWindow = ownerWindow.open(this.props.url, this.props.name || this.props.title, this.createOptions(ownerWindow));
-        this.setState({ popoutWindow });
+        try {
+          const popoutWindow = ownerWindow.open(this.props.url, this.props.name || this.props.title, this.createOptions(ownerWindow));
+          this.setState({popoutWindow});
 
-        popoutWindow.addEventListener('load', this.popoutWindowLoaded);
-        popoutWindow.addEventListener('beforeunload', this.popoutWindowUnloading);
+          popoutWindow.addEventListener('load', this.popoutWindowLoaded);
+          popoutWindow.addEventListener('beforeunload', this.popoutWindowUnloading);
 
-        popoutWindow.document.readyState === 'complete' && this.popoutWindowLoaded(popoutWindow);
+          popoutWindow.document.readyState === 'complete' && this.popoutWindowLoaded(popoutWindow);
+        } catch (error) {
+          console.error('openPopoutWindow error:', error)
+        }
     }
 
     /**
