@@ -130,6 +130,13 @@ export default class PopoutWindow extends React.Component {
 
           popoutWindow.addEventListener('load', this.popoutWindowLoaded);
           popoutWindow.addEventListener('beforeunload', this.popoutWindowUnloading);
+          const checkChild = () => {
+            if (popoutWindow.closed) {
+              this.popoutWindowUnloading();
+              clearInterval(timer)
+            }
+          };
+          var timer = setInterval(checkChild, 500);
 
           popoutWindow.document.readyState === 'complete' && this.popoutWindowLoaded(popoutWindow);
         } catch (error) {
